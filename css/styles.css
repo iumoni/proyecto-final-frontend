@@ -214,3 +214,15 @@ body {
   color: #166534;
   background-color: #f0fdf4;
 } 
+
+@media (min-width: 768px) {
+  .panel-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .search-input {
+    max-width: 280px;
+  }
+} 
