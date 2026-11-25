@@ -38,3 +38,75 @@ const alimentosApi = {
       method: "DELETE",
     }),
 };
+
+const especiesApi = {
+  listar: () => request("/api/especies"),
+  crear: (data) =>
+    request("/api/especies", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+  actualizar: (id, data) =>
+    request(`/api/especies/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    }),
+  eliminar: (id) =>
+    request(`/api/especies/${id}`, {
+      method: "DELETE",
+    }),
+};
+
+const especiesApi = {
+  listar: () => request("/api/especies"),
+  crear: (data) =>
+    request("/api/especies", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+  actualizar: (id, data) =>
+    request(`/api/especies/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    }),
+  eliminar: (id) =>
+    request(`/api/especies/${id}`, {
+      method: "DELETE",
+    }),
+};
+
+const especiesApi = {
+  listar: () => request("/api/especies"),
+  crear: (data) =>
+    request("/api/especies", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+  actualizar: (id, data) =>
+    request(`/api/especies/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    }),
+  eliminar: (id) =>
+    request(`/api/especies/${id}`, {
+      method: "DELETE",
+    }),
+};
+
+const animalesApi = {
+  listar: () => request("/animales"),
+  crear: (data) =>
+    request("/animales", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+  actualizar: (id, data) =>
+    request(`/animales/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    }),
+  eliminar: (id) =>
+    request(`/animales/${id}`, {
+      method: "DELETE",
+    }),
+}; 
