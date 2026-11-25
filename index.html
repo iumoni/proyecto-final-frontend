@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Alimentos, Especies y Animales</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head> 
+
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>Sistema de Gestión</h1>
+      <p class="subtitle">Alimentos, Especies y Animales</p>
+      <nav class="nav-tabs" aria-label="Secciones principales">
+        <button type="button" class="tab-btn is-active" data-section="alimentos">Alimentos</button>
+        <button type="button" class="tab-btn" data-section="especies">Especies</button>
+        <button type="button" class="tab-btn" data-section="animales">Animales</button>
+      </nav>
+    </div>
+  </header> 
+
+  <main class="container main-content">
+    <div id="status-banner" class="status-banner" role="status" aria-live="polite" hidden></div>
+
+
+<!-- SECCIÓN ALIMENTOS -->
+    <section id="section-alimentos" class="panel is-visible">
+      <div class="panel-header">
+        <h2>Alimentos</h2>
+        <input type="search" id="search-alimentos" class="search-input" placeholder="Buscar alimento por nombre..." />
+      </div>
+
+      <form id="form-alimento" class="card-form">
+        <h3 id="form-alimento-title">Registrar alimento</h3>
+        <input type="hidden" id="alimento-id" />
+        <div class="form-group">
+          <label for="nombre-alimento">Nombre del alimento</label>
+          <input type="text" id="nombre-alimento" name="nombreAlimento" maxlength="50" required placeholder="Ej. Manzana" />
+        </div>
+        <div class="form-actions">
+          <button type="submit" id="btn-guardar-alimento" class="btn btn-primary">Guardar</button>
+          <button type="button" id="btn-cancelar-alimento" class="btn btn-secondary" hidden>Cancelar</button>
+        </div>
+      </form>
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-alimentos"></tbody>
+        </table>
+      </div>
+    </section> 
+
+<!-- SECCIÓN ESPECIES -->
+    <section id="section-especies" class="panel" hidden>
+      <div class="panel-header">
+        <h2>Especies</h2>
+        <input type="search" id="search-especies" class="search-input" placeholder="Buscar especie por nombre..." />
+      </div>
+
+      <form id="form-especie" class="card-form">
+        <h3 id="form-especie-title">Registrar especie</h3>
+        <input type="hidden" id="especie-id" />
+        <div class="form-group">
+          <label for="nombre-especie">Nombre de la especie</label>
+          <input type="text" id="nombre-especie" name="nombre" maxlength="50" required placeholder="Ej. Bovino" />
+        </div>
+        <div class="form-actions">
+          <button type="submit" id="btn-guardar-especie" class="btn btn-primary">Guardar</button>
+          <button type="button" id="btn-cancelar-especie" class="btn btn-secondary" hidden>Cancelar</button>
+        </div>
+      </form>
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-especies"></tbody>
+        </table>
+      </div>
+    </section> 
+
+<!-- SECCIÓN ANIMALES -->
+    <section id="section-animales" class="panel" hidden>
+      <div class="panel-header">
+        <h2>Animales</h2>
+        <input type="search" id="search-animales" class="search-input" placeholder="Buscar animal por especie o ID..." />
+      </div>
+
+      <form id="form-animal" class="card-form">
+        <h3 id="form-animal-title">Registrar animal</h3>
+        <input type="hidden" id="animal-id" />
+        <div class="form-group">
+          <label for="animal-especie">Especie</label>
+          <select id="animal-especie" name="especie" required>
+            <option value="">Selecciona una especie...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="animal-edad">Edad (mínimo 1)</label>
+          <input type="number" id="animal-edad" name="edad" min="1" step="1" required placeholder="Ej. 3" />
+        </div>
+        <div class="form-group">
+          <label for="animal-peso">Peso (mayor a 0)</label>
+          <input type="number" id="animal-peso" name="peso" min="0.01" step="0.01" required placeholder="Ej. 450.5" />
+        </div>
+        <div class="form-actions">
+          <button type="submit" id="btn-guardar-animal" class="btn btn-primary">Guardar</button>
+          <button type="button" id="btn-cancelar-animal" class="btn btn-secondary" hidden>Cancelar</button>
+        </div>
+      </form>
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Especie</th>
+              <th>Edad</th>
+              <th>Peso</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-animales"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html> 
