@@ -224,7 +224,11 @@ function mensajeDeError(error, entidad, accion) {
   const status = error && error.status;
   if (status === 0) return error.message;
   if (status === 401) return "Tu sesión no es válida o ya expiró. Inicia sesión de nuevo.";
-  if (status === 400) return error.detalle || "Revisa los datos: hay un campo vacío o con un valor no permitido.";
+  if (status === 400) {
+    // Spring manda "Validation failed for object=..." (técnico, en inglés): mejor un mensaje claro
+    const tecnico = !error.detalle || /validation failed|failed to read|JSON parse/i.test(error.detalle);
+    return tecnico ? "Revisa los datos: hay un campo vacío o con un valor no permitido." : error.detalle;
+  }
   if (status === 404) return error.detalle || `Ese ${cfg ? cfg.singular : "registro"} ya no existe. Recarga la lista.`;
   if (status === 409) return error.detalle || "No se puede completar: el registro está en uso por otro catálogo.";
   if (status >= 500 && (accion === "crear" || accion === "actualizar")) {
@@ -742,13 +746,17 @@ async function cargarDatos({ silencioso = false } = {}) {
       alimentosApi.listar(),
       nutrientesApi.listar(),
     ]);
-    const lista = (x) => (Array.isArray(x) ? x : []);
+    // Ordena por ID ascendente (el backend puede devolverlos en cualquier orden)
+    const lista = (x, entidad) => {
+      const key = ENTIDADES[entidad].idKey;
+      return Array.isArray(x) ? [...x].sort((a, b) => (a[key] ?? 0) - (b[key] ?? 0)) : [];
+    };
     state.datos = {
-      animales: lista(animales),
-      especies: lista(especies),
-      corrales: lista(corrales),
-      alimentos: lista(alimentos),
-      nutrientes: lista(nutrientes),
+      animales: lista(animales, "animales"),
+      especies: lista(especies, "especies"),
+      corrales: lista(corrales, "corrales"),
+      alimentos: lista(alimentos, "alimentos"),
+      nutrientes: lista(nutrientes, "nutrientes"),
     };
     state.errorCarga = null;
     renderServidor("ok");
