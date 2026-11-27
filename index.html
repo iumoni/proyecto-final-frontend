@@ -3,143 +3,380 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestión de Alimentos, Especies y Animales</title>
+  <title>Granja · Control de animales, alimentos y corrales</title>
+  <meta name="description" content="Panel para administrar animales, especies, corrales, alimentos y nutrientes de la granja." />
+  <meta name="theme-color" content="#f6f3ec" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232f5d3a'/%3E%3Cpath d='M8 23V13l8-5 8 5v10' fill='none' stroke='%23f6f3ec' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M12 23v-6h8v6' fill='none' stroke='%23f6f3ec' stroke-width='2.4' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/instrument-sans@5.3.0/files/instrument-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="css/styles.css" />
-</head> 
+</head>
 
 <body>
-  <header class="site-header">
-    <div class="container">
-      <h1>Sistema de Gestión</h1>
-      <p class="subtitle">Alimentos, Especies y Animales</p>
-      <nav class="nav-tabs" aria-label="Secciones principales">
-        <button type="button" class="tab-btn is-active" data-section="alimentos">Alimentos</button>
-        <button type="button" class="tab-btn" data-section="especies">Especies</button>
-        <button type="button" class="tab-btn" data-section="animales">Animales</button>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <!-- Iconos (se reutilizan con <use href="#i-...">) -->
+  <svg width="0" height="0" class="sr-only" aria-hidden="true">
+    <symbol id="i-animal" viewBox="0 0 24 24"><path d="M12.6 2.6a2 2 0 0 0-1.4-.6H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.8 8.8a2 2 0 0 0 2.8 0l7.2-7.2a2 2 0 0 0 0-2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/></symbol>
+    <symbol id="i-especie" viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></symbol>
+    <symbol id="i-corral" viewBox="0 0 24 24"><path d="M4 21V6l2-3 2 3v15"/><path d="M16 21V6l2-3 2 3v15"/><path d="M8 9h8M8 15h8"/><path d="M2 21h20"/></symbol>
+    <symbol id="i-alimento" viewBox="0 0 24 24"><path d="M12 22V9"/><path d="M12 13c-3 0-5-2-5-5 3 0 5 2 5 5z"/><path d="M12 13c3 0 5-2 5-5-3 0-5 2-5 5z"/><path d="M12 18c-3 0-5-2-5-5 3 0 5 2 5 5z"/><path d="M12 18c3 0 5-2 5-5-3 0-5 2-5 5z"/><path d="M12 9c-1.5-1-2-2.5-1.5-5 2 .7 2.5 2.5 1.5 5z"/></symbol>
+    <symbol id="i-nutriente" viewBox="0 0 24 24"><path d="M9 2h6M10 2v6.5L4.6 18a2 2 0 0 0 1.7 3h11.4a2 2 0 0 0 1.7-3L14 8.5V2"/><path d="M7 15h10"/></symbol>
+    <symbol id="i-buscar" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-editar" viewBox="0 0 24 24"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></symbol>
+    <symbol id="i-borrar" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></symbol>
+    <symbol id="i-candado" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-salir" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol>
+    <symbol id="i-servidor" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h.01M7 17.5h.01"/></symbol>
+    <symbol id="i-cerrar" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-recargar" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4L21 8"/><path d="M21 3v5h-5"/></symbol>
+  </svg>
+
+  <div class="app">
+    <!-- ================= BARRA LATERAL ================= -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><path d="M8 23V13l8-5 8 5v10"/><path d="M12 23v-6h8v6"/></svg>
+        </span>
+        <span class="brand-text">
+          <strong>Granja</strong>
+          <span>Control de inventario</span>
+        </span>
+      </div>
+
+      <nav class="nav" aria-label="Catálogos">
+        <a class="nav-item" href="#animales" data-section="animales">
+          <svg class="icon" aria-hidden="true"><use href="#i-animal" /></svg>
+          <span>Animales</span><span class="nav-count" data-count="animales"></span>
+        </a>
+        <a class="nav-item" href="#especies" data-section="especies">
+          <svg class="icon" aria-hidden="true"><use href="#i-especie" /></svg>
+          <span>Especies</span><span class="nav-count" data-count="especies"></span>
+        </a>
+        <a class="nav-item" href="#corrales" data-section="corrales">
+          <svg class="icon" aria-hidden="true"><use href="#i-corral" /></svg>
+          <span>Corrales</span><span class="nav-count" data-count="corrales"></span>
+        </a>
+        <a class="nav-item" href="#alimentos" data-section="alimentos">
+          <svg class="icon" aria-hidden="true"><use href="#i-alimento" /></svg>
+          <span>Alimentos</span><span class="nav-count" data-count="alimentos"></span>
+        </a>
+        <a class="nav-item" href="#nutrientes" data-section="nutrientes">
+          <svg class="icon" aria-hidden="true"><use href="#i-nutriente" /></svg>
+          <span>Nutrientes</span><span class="nav-count" data-count="nutrientes"></span>
+        </a>
       </nav>
-    </div>
-  </header> 
 
-  <main class="container main-content">
-    <div id="status-banner" class="status-banner" role="status" aria-live="polite" hidden></div>
-
-
-<!-- SECCIÓN ALIMENTOS -->
-    <section id="section-alimentos" class="panel is-visible">
-      <div class="panel-header">
-        <h2>Alimentos</h2>
-        <input type="search" id="search-alimentos" class="search-input" placeholder="Buscar alimento por nombre..." />
+      <div class="sidebar-foot">
+        <button type="button" class="server-status" id="btn-servidor" data-state="loading" aria-describedby="server-detail">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="server-text">
+            <span id="server-label">Conectando…</span>
+            <span id="server-detail" class="server-url"></span>
+          </span>
+        </button>
+        <div class="session" id="session-box">
+          <!-- Lo dibuja app.js según haya sesión o no -->
+        </div>
       </div>
+    </aside>
 
-      <form id="form-alimento" class="card-form">
-        <h3 id="form-alimento-title">Registrar alimento</h3>
-        <input type="hidden" id="alimento-id" />
-        <div class="form-group">
-          <label for="nombre-alimento">Nombre del alimento</label>
-          <input type="text" id="nombre-alimento" name="nombreAlimento" maxlength="50" required placeholder="Ej. Manzana" />
-        </div>
-        <div class="form-actions">
-          <button type="submit" id="btn-guardar-alimento" class="btn btn-primary">Guardar</button>
-          <button type="button" id="btn-cancelar-alimento" class="btn btn-secondary" hidden>Cancelar</button>
-        </div>
-      </form>
+    <!-- ================= CONTENIDO ================= -->
+    <main id="contenido" class="main" tabindex="-1">
 
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-alimentos"></tbody>
-        </table>
+      <!-- ---------- ANIMALES ---------- -->
+      <section id="section-animales" class="panel" data-entity="animales" aria-labelledby="h-animales" hidden>
+        <header class="panel-head">
+          <div>
+            <h1 id="h-animales">Animales</h1>
+            <p class="panel-desc">Cada animal pertenece a una especie. La edad y el peso deben ser mayores a cero.</p>
+          </div>
+          <label class="search">
+            <svg class="icon" aria-hidden="true"><use href="#i-buscar" /></svg>
+            <span class="sr-only">Buscar animales</span>
+            <input type="search" id="search-animales" placeholder="Buscar por especie o ID" autocomplete="off" />
+          </label>
+        </header>
+
+        <div class="panel-body">
+          <form id="form-animales" class="form-card" data-entity="animales">
+            <h2 class="form-title" data-title>Registrar animal</h2>
+            <input type="hidden" name="id" />
+            <div class="field">
+              <label for="animal-especie">Especie</label>
+              <select id="animal-especie" name="especieId" required>
+                <option value="">Selecciona una especie</option>
+              </select>
+              <p class="field-hint" id="hint-especies-vacias" hidden>
+                Aún no hay especies. <a href="#especies">Registra una especie</a> primero.
+              </p>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="animal-edad">Edad</label>
+                <input type="number" id="animal-edad" name="edad" min="1" step="1" required inputmode="numeric" placeholder="3" />
+              </div>
+              <div class="field">
+                <label for="animal-peso">Peso</label>
+                <input type="number" id="animal-peso" name="peso" min="0.01" step="0.01" required inputmode="decimal" placeholder="450.5" />
+              </div>
+            </div>
+            <p class="form-error" data-error role="alert" hidden></p>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" data-submit>Guardar animal</button>
+              <button type="button" class="btn btn-ghost" data-cancel hidden>Cancelar</button>
+            </div>
+            <p class="form-lock" data-lock><svg class="icon" aria-hidden="true"><use href="#i-candado" /></svg>Para guardar necesitas iniciar sesión.</p>
+          </form>
+
+          <div class="table-card">
+            <table class="data-table">
+              <caption class="sr-only">Lista de animales</caption>
+              <thead>
+                <tr><th scope="col" class="col-id">ID</th><th scope="col">Especie</th><th scope="col" class="num">Edad</th><th scope="col" class="num">Peso</th><th scope="col" class="col-actions"><span class="sr-only">Acciones</span></th></tr>
+              </thead>
+              <tbody id="tbody-animales"></tbody>
+            </table>
+            <div class="table-empty" data-empty hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- ESPECIES ---------- -->
+      <section id="section-especies" class="panel" data-entity="especies" aria-labelledby="h-especies" hidden>
+        <header class="panel-head">
+          <div>
+            <h1 id="h-especies">Especies</h1>
+            <p class="panel-desc">Catálogo de especies. Una especie con animales asociados no se puede eliminar.</p>
+          </div>
+          <label class="search">
+            <svg class="icon" aria-hidden="true"><use href="#i-buscar" /></svg>
+            <span class="sr-only">Buscar especies</span>
+            <input type="search" id="search-especies" placeholder="Buscar por nombre" autocomplete="off" />
+          </label>
+        </header>
+
+        <div class="panel-body">
+          <form id="form-especies" class="form-card" data-entity="especies">
+            <h2 class="form-title" data-title>Registrar especie</h2>
+            <input type="hidden" name="id" />
+            <div class="field">
+              <label for="especie-nombre">Nombre</label>
+              <input type="text" id="especie-nombre" name="nombre" maxlength="50" required placeholder="Bovino" autocomplete="off" />
+            </div>
+            <p class="form-error" data-error role="alert" hidden></p>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" data-submit>Guardar especie</button>
+              <button type="button" class="btn btn-ghost" data-cancel hidden>Cancelar</button>
+            </div>
+            <p class="form-lock" data-lock><svg class="icon" aria-hidden="true"><use href="#i-candado" /></svg>Para guardar necesitas iniciar sesión.</p>
+          </form>
+
+          <div class="table-card">
+            <table class="data-table">
+              <caption class="sr-only">Lista de especies</caption>
+              <thead>
+                <tr><th scope="col" class="col-id">ID</th><th scope="col">Nombre</th><th scope="col" class="num">Animales</th><th scope="col" class="col-actions"><span class="sr-only">Acciones</span></th></tr>
+              </thead>
+              <tbody id="tbody-especies"></tbody>
+            </table>
+            <div class="table-empty" data-empty hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- CORRALES ---------- -->
+      <section id="section-corrales" class="panel" data-entity="corrales" aria-labelledby="h-corrales" hidden>
+        <header class="panel-head">
+          <div>
+            <h1 id="h-corrales">Corrales</h1>
+            <p class="panel-desc">Corrales operativos de la granja y cuántos animales caben en cada uno.</p>
+          </div>
+          <label class="search">
+            <svg class="icon" aria-hidden="true"><use href="#i-buscar" /></svg>
+            <span class="sr-only">Buscar corrales</span>
+            <input type="search" id="search-corrales" placeholder="Buscar por nombre" autocomplete="off" />
+          </label>
+        </header>
+
+        <div class="panel-body">
+          <form id="form-corrales" class="form-card" data-entity="corrales">
+            <h2 class="form-title" data-title>Registrar corral</h2>
+            <input type="hidden" name="id" />
+            <div class="field">
+              <label for="corral-nombre">Nombre</label>
+              <input type="text" id="corral-nombre" name="nombreCorral" maxlength="50" required placeholder="Corral norte" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="corral-capacidad">Capacidad</label>
+              <input type="number" id="corral-capacidad" name="capacidad" min="1" step="1" required inputmode="numeric" placeholder="25" />
+            </div>
+            <p class="form-error" data-error role="alert" hidden></p>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" data-submit>Guardar corral</button>
+              <button type="button" class="btn btn-ghost" data-cancel hidden>Cancelar</button>
+            </div>
+            <p class="form-lock" data-lock><svg class="icon" aria-hidden="true"><use href="#i-candado" /></svg>Para guardar necesitas iniciar sesión.</p>
+          </form>
+
+          <div class="table-card">
+            <table class="data-table">
+              <caption class="sr-only">Lista de corrales</caption>
+              <thead>
+                <tr><th scope="col" class="col-id">ID</th><th scope="col">Nombre</th><th scope="col" class="num">Capacidad</th><th scope="col" class="col-actions"><span class="sr-only">Acciones</span></th></tr>
+              </thead>
+              <tbody id="tbody-corrales"></tbody>
+            </table>
+            <div class="table-empty" data-empty hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- ALIMENTOS ---------- -->
+      <section id="section-alimentos" class="panel" data-entity="alimentos" aria-labelledby="h-alimentos" hidden>
+        <header class="panel-head">
+          <div>
+            <h1 id="h-alimentos">Alimentos</h1>
+            <p class="panel-desc">Alimentos disponibles y los nutrientes que aporta cada uno.</p>
+          </div>
+          <label class="search">
+            <svg class="icon" aria-hidden="true"><use href="#i-buscar" /></svg>
+            <span class="sr-only">Buscar alimentos</span>
+            <input type="search" id="search-alimentos" placeholder="Buscar por nombre o nutriente" autocomplete="off" />
+          </label>
+        </header>
+
+        <div class="panel-body">
+          <form id="form-alimentos" class="form-card" data-entity="alimentos">
+            <h2 class="form-title" data-title>Registrar alimento</h2>
+            <input type="hidden" name="id" />
+            <div class="field">
+              <label for="alimento-nombre">Nombre</label>
+              <input type="text" id="alimento-nombre" name="nombreAlimento" maxlength="50" required placeholder="Alfalfa" autocomplete="off" />
+            </div>
+            <fieldset class="field">
+              <legend>Nutrientes que aporta</legend>
+              <div class="check-list" id="alimento-nutrientes"></div>
+              <p class="field-hint" id="hint-nutrientes-vacios" hidden>
+                Aún no hay nutrientes. <a href="#nutrientes">Registra nutrientes</a> para asociarlos.
+              </p>
+            </fieldset>
+            <p class="form-error" data-error role="alert" hidden></p>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" data-submit>Guardar alimento</button>
+              <button type="button" class="btn btn-ghost" data-cancel hidden>Cancelar</button>
+            </div>
+            <p class="form-lock" data-lock><svg class="icon" aria-hidden="true"><use href="#i-candado" /></svg>Para guardar necesitas iniciar sesión.</p>
+          </form>
+
+          <div class="table-card">
+            <table class="data-table">
+              <caption class="sr-only">Lista de alimentos</caption>
+              <thead>
+                <tr><th scope="col" class="col-id">ID</th><th scope="col">Nombre</th><th scope="col">Nutrientes</th><th scope="col" class="col-actions"><span class="sr-only">Acciones</span></th></tr>
+              </thead>
+              <tbody id="tbody-alimentos"></tbody>
+            </table>
+            <div class="table-empty" data-empty hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- NUTRIENTES ---------- -->
+      <section id="section-nutrientes" class="panel" data-entity="nutrientes" aria-labelledby="h-nutrientes" hidden>
+        <header class="panel-head">
+          <div>
+            <h1 id="h-nutrientes">Nutrientes</h1>
+            <p class="panel-desc">Nutrientes que pueden aportar los alimentos. Uno asociado a algún alimento no se puede eliminar.</p>
+          </div>
+          <label class="search">
+            <svg class="icon" aria-hidden="true"><use href="#i-buscar" /></svg>
+            <span class="sr-only">Buscar nutrientes</span>
+            <input type="search" id="search-nutrientes" placeholder="Buscar por nombre" autocomplete="off" />
+          </label>
+        </header>
+
+        <div class="panel-body">
+          <form id="form-nutrientes" class="form-card" data-entity="nutrientes">
+            <h2 class="form-title" data-title>Registrar nutriente</h2>
+            <input type="hidden" name="id" />
+            <div class="field">
+              <label for="nutriente-nombre">Nombre</label>
+              <input type="text" id="nutriente-nombre" name="nombreNutriente" maxlength="50" required placeholder="Proteína" autocomplete="off" />
+            </div>
+            <p class="form-error" data-error role="alert" hidden></p>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" data-submit>Guardar nutriente</button>
+              <button type="button" class="btn btn-ghost" data-cancel hidden>Cancelar</button>
+            </div>
+            <p class="form-lock" data-lock><svg class="icon" aria-hidden="true"><use href="#i-candado" /></svg>Para guardar necesitas iniciar sesión.</p>
+          </form>
+
+          <div class="table-card">
+            <table class="data-table">
+              <caption class="sr-only">Lista de nutrientes</caption>
+              <thead>
+                <tr><th scope="col" class="col-id">ID</th><th scope="col">Nombre</th><th scope="col" class="num">Alimentos</th><th scope="col" class="col-actions"><span class="sr-only">Acciones</span></th></tr>
+              </thead>
+              <tbody id="tbody-nutrientes"></tbody>
+            </table>
+            <div class="table-empty" data-empty hidden></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ================= DIÁLOGO: INICIAR SESIÓN ================= -->
+  <dialog id="dialog-login" class="dialog" aria-labelledby="login-title">
+    <form id="form-login" class="dialog-body">
+      <div class="dialog-head">
+        <h2 id="login-title">Iniciar sesión</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Cerrar">
+          <svg class="icon" aria-hidden="true"><use href="#i-cerrar" /></svg>
+        </button>
       </div>
-    </section> 
-
-<!-- SECCIÓN ESPECIES -->
-    <section id="section-especies" class="panel" hidden>
-      <div class="panel-header">
-        <h2>Especies</h2>
-        <input type="search" id="search-especies" class="search-input" placeholder="Buscar especie por nombre..." />
+      <p class="dialog-desc" id="login-desc">Consultar es libre. Para registrar, editar o eliminar necesitas una sesión.</p>
+      <div class="field">
+        <label for="login-usuario">Usuario</label>
+        <input type="text" id="login-usuario" name="username" required autocomplete="username" />
       </div>
-
-      <form id="form-especie" class="card-form">
-        <h3 id="form-especie-title">Registrar especie</h3>
-        <input type="hidden" id="especie-id" />
-        <div class="form-group">
-          <label for="nombre-especie">Nombre de la especie</label>
-          <input type="text" id="nombre-especie" name="nombre" maxlength="50" required placeholder="Ej. Bovino" />
-        </div>
-        <div class="form-actions">
-          <button type="submit" id="btn-guardar-especie" class="btn btn-primary">Guardar</button>
-          <button type="button" id="btn-cancelar-especie" class="btn btn-secondary" hidden>Cancelar</button>
-        </div>
-      </form>
-
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-especies"></tbody>
-        </table>
+      <div class="field">
+        <label for="login-password">Contraseña</label>
+        <input type="password" id="login-password" name="password" required autocomplete="current-password" />
       </div>
-    </section> 
-
-<!-- SECCIÓN ANIMALES -->
-    <section id="section-animales" class="panel" hidden>
-      <div class="panel-header">
-        <h2>Animales</h2>
-        <input type="search" id="search-animales" class="search-input" placeholder="Buscar animal por especie o ID..." />
+      <p class="form-error" id="login-error" role="alert" hidden></p>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-block" id="btn-login">Entrar</button>
       </div>
+    </form>
+  </dialog>
 
-      <form id="form-animal" class="card-form">
-        <h3 id="form-animal-title">Registrar animal</h3>
-        <input type="hidden" id="animal-id" />
-        <div class="form-group">
-          <label for="animal-especie">Especie</label>
-          <select id="animal-especie" name="especie" required>
-            <option value="">Selecciona una especie...</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="animal-edad">Edad (mínimo 1)</label>
-          <input type="number" id="animal-edad" name="edad" min="1" step="1" required placeholder="Ej. 3" />
-        </div>
-        <div class="form-group">
-          <label for="animal-peso">Peso (mayor a 0)</label>
-          <input type="number" id="animal-peso" name="peso" min="0.01" step="0.01" required placeholder="Ej. 450.5" />
-        </div>
-        <div class="form-actions">
-          <button type="submit" id="btn-guardar-animal" class="btn btn-primary">Guardar</button>
-          <button type="button" id="btn-cancelar-animal" class="btn btn-secondary" hidden>Cancelar</button>
-        </div>
-      </form>
-
-      <div class="table-wrapper">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Especie</th>
-              <th>Edad</th>
-              <th>Peso</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tbody-animales"></tbody>
-        </table>
+  <!-- ================= DIÁLOGO: SERVIDOR ================= -->
+  <dialog id="dialog-servidor" class="dialog" aria-labelledby="servidor-title">
+    <form id="form-servidor" class="dialog-body">
+      <div class="dialog-head">
+        <h2 id="servidor-title">Servidor de la API</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Cerrar">
+          <svg class="icon" aria-hidden="true"><use href="#i-cerrar" /></svg>
+        </button>
       </div>
-    </section>
-  </main>
+      <p class="dialog-desc">Dirección donde corre Spring Boot. En la misma computadora suele ser <code>http://localhost:8080</code>.</p>
+      <div class="field">
+        <label for="servidor-url">URL</label>
+        <input type="url" id="servidor-url" name="url" required placeholder="http://localhost:8080" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Conectar</button>
+        <button type="button" class="btn btn-ghost" id="btn-servidor-default">Usar localhost:8080</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 
   <script src="js/api.js"></script>
   <script src="js/app.js"></script>
 </body>
-</html> 
+</html>
